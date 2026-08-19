@@ -1,0 +1,41 @@
+name: Update PressTV feed
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every 5 minutes, offset from the top of the hour.
+    - cron: "7-59/5 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: presstv-feed
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch current Rumble HLS feed
+        run: python scripts/fetch_presstv.py
+
+      - name: Commit changed playlist
+        run: |
+          git config user.name "Hilay TV Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add presstv.m3u8
+          if git diff --cached --quiet; then
+            echo "No playlist change."
+            exit 0
+          fi
+          git commit -m "Update PressTV HLS feed"
+          git push
