@@ -26,11 +26,6 @@ After the repository is created, the raw playlist URL is:
 
 `https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/hilaytv-presstv-rumble/main/presstv.m3u8`
 
-Your Hilay TV playlist can use:
 
-```m3u
-#EXTINF:-1 tvg-id="presstv" tvg-name="PressTV Live" group-title="HilayTV | News",PressTV Live
-https://hilaytv.xyz/presstv.m3u8
-```
 
-Configure LiteSpeed so `/presstv.m3u8` redirects to the raw GitHub URL.
+
